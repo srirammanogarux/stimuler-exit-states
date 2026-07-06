@@ -235,31 +235,29 @@ body{
 .perm-dim{position:absolute;inset:0;z-index:10;pointer-events:none;opacity:0;transition:.45s var(--ease);background:rgba(6,4,2,.5)}
 #video.perm-open .perm-dim{opacity:1;pointer-events:auto}
 
-/* language switch visual + NEW badge */
+/* NEW badge */
 .new-badge{display:inline-flex;align-items:center;background:var(--gold);color:#1a1206;font-size:9.5px;font-weight:800;letter-spacing:.06em;padding:3px 7px;border-radius:20px;text-transform:uppercase;line-height:1}
-.lang-switch{display:flex;align-items:center;justify-content:center;gap:12px;margin:8px 0 2px}
-.lang-pill{display:inline-flex;align-items:center;gap:8px;background:#1c1813;border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:14px 18px;font-weight:600;font-size:15.5px;color:#cfc6b6}
-.lang-pill.to{border-color:var(--gold-line);background:var(--gold-soft);color:#fff}
-.lang-switch .arrow{width:22px;height:22px;stroke:var(--gold);fill:none;stroke-width:2.2;flex:0 0 auto}
 
-/* neutral secondary CTA (Keep English) */
-.cta-row .btn-neutral{flex:1;width:auto;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.04);color:#e6ddcf;border-radius:16px;padding:16px 10px;font-family:inherit;font-weight:600;font-size:15px;cursor:pointer;transition:.18s var(--ease)}
-.cta-row .btn-neutral:active{transform:translateY(1px)}
+/* neutral secondary CTA (Keep English) — base is full width (stacked) */
+.btn-neutral{width:100%;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.05);color:#e6ddcf;border-radius:16px;padding:16px;font-family:inherit;font-weight:600;font-size:15px;cursor:pointer;transition:.18s var(--ease)}
+.btn-neutral:active{transform:translateY(1px)}
+.cta-row .btn-neutral{flex:1;width:auto;padding:16px 10px}
+/* permission footer: stacked CTAs */
+.perm-foot{gap:9px}
 
-/* reactivation coach-mark on the language card */
+/* reactivation coach-mark: ripple waves + tap finger on the language card */
 .lang-card{position:relative}
 .lang-card .new-flag{position:absolute;top:-9px;right:12px;z-index:4;display:none}
-.lang-tooltip{position:absolute;left:50%;bottom:calc(100% + 12px);transform:translateX(-50%) translateY(6px);width:max-content;max-width:270px;z-index:6;display:none;align-items:center;gap:8px;background:#241c12;border:1px solid var(--gold-line);border-radius:14px;padding:10px 13px;box-shadow:0 12px 30px rgba(0,0,0,.5);opacity:0;transition:opacity .3s var(--ease),transform .3s var(--ease)}
-.lang-tooltip .tt-text{font-size:12.5px;font-weight:600;color:#f1e6d2}
-.lang-tooltip .tt-arrow{position:absolute;top:100%;left:50%;transform:translateX(-50%);width:0;height:0;border-left:7px solid transparent;border-right:7px solid transparent;border-top:8px solid #241c12}
-#video.react-mode .lang-card .new-flag{display:inline-flex}
-#video.react-mode .lang-card{box-shadow:0 0 0 2px var(--gold),0 0 26px rgba(227,178,74,.3)}
-#video.react-mode .lang-tooltip{display:flex;opacity:1;transform:translateX(-50%) translateY(0)}
-#video.react-mode .controls{margin-top:84px}
-#video.react-mode #exitLangSeg [data-lang="es"]{animation:langpulse 1.6s var(--ease) infinite}
-@keyframes langpulse{0%,100%{box-shadow:0 0 0 0 rgba(227,178,74,0)}50%{box-shadow:0 0 0 4px rgba(227,178,74,.18)}}
-/* while the permission overlay is up, calm the coach-mark */
-#video.perm-open .lang-tooltip{opacity:0}
+.card-waves{position:absolute;inset:0;border-radius:16px;pointer-events:none;display:none;z-index:0}
+.card-waves::before,.card-waves::after{content:"";position:absolute;inset:0;border-radius:16px;border:2px solid var(--gold);opacity:0;animation:cardwave 2.1s var(--ease) infinite}
+.card-waves::after{animation-delay:1.05s}
+@keyframes cardwave{0%{transform:scale(1);opacity:.55}80%{opacity:0}100%{transform:scale(1.16);opacity:0}}
+.tap-finger{position:absolute;right:30px;bottom:-20px;z-index:5;font-size:30px;line-height:1;display:none;pointer-events:none;filter:drop-shadow(0 4px 6px rgba(0,0,0,.55));transform-origin:center top;animation:tap 1.25s var(--ease) infinite}
+@keyframes tap{0%,100%{transform:translateY(0) scale(1)}45%{transform:translateY(-9px) scale(.9)}}
+#video.react-coach .lang-card .new-flag{display:inline-flex}
+#video.react-coach .card-waves{display:block}
+#video.react-coach .lang-card .tap-finger{display:block}
+#video.react-coach #exitLangSeg [data-lang="es"]{color:#fff;box-shadow:0 0 0 2px var(--gold-line) inset;border-radius:9px}
 </style>
 </head>
 <body>
@@ -327,15 +325,12 @@ body{
           <div class="cards">
             <!-- 1 · Video language -->
             <div class="card lang-card">
+              <span class="card-waves" aria-hidden="true"></span>
               <span class="new-flag new-badge">NEW</span>
               <div class="ico"><svg viewBox="0 0 24 24"><rect width="14" height="12" x="2" y="6" rx="2"/><path d="m22 8-6 4 6 4V8Z"/></svg></div>
               <div class="meta"><div class="t">Video language</div></div>
               <div class="seg" data-seg="lang" id="exitLangSeg"><button class="sel">English</button><button data-lang="es">Spanish</button></div>
-              <div class="lang-tooltip" id="langTooltip">
-                <span class="new-badge">NEW</span>
-                <span class="tt-text">Now watch in Spanish — tap to switch</span>
-                <span class="tt-arrow"></span>
-              </div>
+              <span class="tap-finger" aria-hidden="true">👆</span>
             </div>
 
             <!-- 2 · Playback speed (boxed, label + slider) -->
@@ -403,19 +398,9 @@ body{
           <h2 class="sheet-title">Do you want to switch video language?</h2>
         </div>
 
-        <div class="controls">
-          <div class="lang-switch">
-            <span class="lang-pill">English</span>
-            <svg class="arrow" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-            <span class="lang-pill to">Español <span class="new-badge">NEW</span></span>
-          </div>
-        </div>
-
-        <div class="sheet-foot">
-          <div class="cta-row">
-            <button class="btn-neutral" id="permKeep">Keep English</button>
-            <button class="keep" id="permSwitch">Change to Spanish</button>
-          </div>
+        <div class="sheet-foot perm-foot">
+          <button class="keep" id="permSwitch">Change to Spanish</button>
+          <button class="btn-neutral" id="permKeep">Keep English</button>
           <div class="home-ind"></div>
         </div>
 
@@ -474,20 +459,27 @@ function openPerm(){ $('#permThanks').hidden=true; video.classList.add('perm-ope
 function closePerm(){ video.classList.remove('perm-open'); setTimeout(()=>$('#permThanks').hidden=true,320); }
 $('#permClose').onclick=closePerm;
 $('#permKeep').onclick=()=>{ closePerm(); toast('Keeping English'); };
-$('#permSwitch').onclick=()=>{ $('#permThanks').hidden=false; };
+$('#permSwitch').onclick=()=>{
+  if(currentState==='reactivation'){
+    // reactivation: go to the controls sheet and coach the user to tap Spanish
+    closePerm();
+    setTimeout(()=>{ resetLang(); openSheet(); video.classList.add('react-coach'); }, 340);
+  } else {
+    $('#permThanks').hidden=false;   // standalone permission: acknowledge
+  }
+};
 $('#permThanksBack').onclick=()=>{
   const seg=$('#exitLangSeg');
   if(seg){ seg.querySelectorAll('button').forEach(b=>b.classList.remove('sel')); const es=seg.querySelector('[data-lang="es"]'); if(es) es.classList.add('sel'); }
-  video.classList.remove('react-mode');
   closePerm(); toast('Video language: Spanish');
 };
 
-/* in reactivation, tapping Spanish opens the permission overlay instead of just selecting */
+/* in the reactivation coach, tapping Spanish selects it and clears the coach-mark */
 $('#exitLangSeg').addEventListener('click',e=>{
-  if(currentState!=='reactivation') return;
+  if(!video.classList.contains('react-coach')) return;
   const b=e.target.closest('button'); if(!b) return;
-  if(b.dataset.lang==='es'){ e.stopImmediatePropagation(); openPerm(); }
-}, true);
+  if(b.dataset.lang==='es'){ video.classList.remove('react-coach'); toast('Now playing in Spanish 🎉'); }
+});
 
 /* ---- state switcher: exit / permission / reactivation ---- */
 let currentState='exit';
@@ -496,11 +488,11 @@ function setState(s){
   currentState=s;
   $$('#stateChips button').forEach(b=>b.classList.toggle('active', b.dataset.state===s));
   showScreen('video'); $('#startHot').classList.remove('pulse');
-  video.classList.remove('perm-open','react-mode'); $('#permThanks').hidden=true;
+  video.classList.remove('perm-open','react-coach','sheet-open'); $('#permThanks').hidden=true;
   resetLang();
   if(s==='exit'){ openSheet(); }
-  else if(s==='permission'){ video.classList.remove('sheet-open'); resetSheet(); openPerm(); }
-  else if(s==='reactivation'){ openSheet(); video.classList.add('react-mode'); }
+  else if(s==='permission'){ resetSheet(); openPerm(); }
+  else if(s==='reactivation'){ openPerm(); }   // starts on the permission sheet
 }
 $('#stateChips').addEventListener('click',e=>{ const b=e.target.closest('button[data-state]'); if(b) setState(b.dataset.state); });
 
@@ -538,6 +530,7 @@ $$('[data-seg]').forEach(seg=>seg.addEventListener('click',e=>{
   if(h==='sheet'||h==='exit'){setState('exit');}
   if(h==='permission'){setState('permission');}
   if(h==='reactivation'){setState('reactivation');}
+  if(h==='reactcoach'){ currentState='reactivation'; showScreen('video'); resetLang(); openSheet(); video.classList.add('react-coach'); }
 })();
 
 /* ---- view-code drawer ---- */
