@@ -60,7 +60,7 @@ body{
   padding:0 22px calc(20px + env(safe-area-inset-bottom));
   transform:translateY(110%);transition:transform .5s var(--ease);
   box-shadow:0 -30px 70px -20px rgba(0,0,0,.7);height:auto;max-height:94%;display:flex;flex-direction:column}
-#video.sheet-open .sheet{transform:translateY(0)}
+#video.sheet-open #sheet{transform:translateY(0)}
 
 /* peeking thumbnail straddling sheet top */
 .thumb{position:absolute;top:-48px;left:50%;transform:translateX(-50%);width:96px;height:96px;border-radius:22px;overflow:hidden;border:2px solid rgba(233,196,106,.85);box-shadow:0 12px 30px rgba(0,0,0,.55),0 0 0 5px rgba(20,15,10,.6);z-index:2}
@@ -219,6 +219,47 @@ body{
 .code-head button{background:#1a1a20;border:1px solid #2b2b32;color:#dcdce0;border-radius:9px;padding:8px 13px;font-family:'Urbanist',sans-serif;font-size:12.5px;font-weight:600;cursor:pointer;transition:.18s var(--ease)}
 .code-head button:hover{background:#24242c}
 .code-drawer pre{margin:0;flex:1;overflow:auto;padding:16px 18px;font-family:ui-monospace,'SF Mono',Menlo,monospace;font-size:12px;line-height:1.55;color:#c9d1d9;white-space:pre;tab-size:2}
+
+/* ---------- state chips (right side) ---------- */
+.state-chips{position:fixed;right:22px;top:50%;transform:translateY(-50%);z-index:70;display:flex;flex-direction:column;gap:9px}
+.state-chips .lbl{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:#b3b3b3;font-weight:700;margin:0 2px 3px}
+.state-chips button{display:flex;align-items:center;gap:9px;background:#141414;color:#c4c4c4;border:1px solid #2a2a2a;border-radius:30px;padding:11px 17px 11px 14px;font-family:'Urbanist',sans-serif;font-weight:600;font-size:13px;cursor:pointer;transition:.2s var(--ease);white-space:nowrap;box-shadow:0 6px 18px rgba(0,0,0,.12)}
+.state-chips button .d{width:7px;height:7px;border-radius:50%;background:#4a4a4a;flex:0 0 auto;transition:.2s}
+.state-chips button:hover{background:#1d1d1d;color:#efefef}
+.state-chips button.active{background:var(--gold);color:#1a1206;border-color:var(--gold)}
+.state-chips button.active .d{background:#1a1206}
+
+/* ---------- permission sheet (reuses .sheet) ---------- */
+.perm-sheet{z-index:12;opacity:0;visibility:hidden;transition:transform .5s var(--ease),opacity .35s var(--ease),visibility .35s}
+#video.perm-open .perm-sheet{transform:translateY(0);opacity:1;visibility:visible}
+.perm-dim{position:absolute;inset:0;z-index:10;pointer-events:none;opacity:0;transition:.45s var(--ease);background:rgba(6,4,2,.5)}
+#video.perm-open .perm-dim{opacity:1;pointer-events:auto}
+
+/* language switch visual + NEW badge */
+.new-badge{display:inline-flex;align-items:center;background:var(--gold);color:#1a1206;font-size:9.5px;font-weight:800;letter-spacing:.06em;padding:3px 7px;border-radius:20px;text-transform:uppercase;line-height:1}
+.lang-switch{display:flex;align-items:center;justify-content:center;gap:12px;margin:8px 0 2px}
+.lang-pill{display:inline-flex;align-items:center;gap:8px;background:#1c1813;border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:14px 18px;font-weight:600;font-size:15.5px;color:#cfc6b6}
+.lang-pill.to{border-color:var(--gold-line);background:var(--gold-soft);color:#fff}
+.lang-switch .arrow{width:22px;height:22px;stroke:var(--gold);fill:none;stroke-width:2.2;flex:0 0 auto}
+
+/* neutral secondary CTA (Keep English) */
+.cta-row .btn-neutral{flex:1;width:auto;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.04);color:#e6ddcf;border-radius:16px;padding:16px 10px;font-family:inherit;font-weight:600;font-size:15px;cursor:pointer;transition:.18s var(--ease)}
+.cta-row .btn-neutral:active{transform:translateY(1px)}
+
+/* reactivation coach-mark on the language card */
+.lang-card{position:relative}
+.lang-card .new-flag{position:absolute;top:-9px;right:12px;z-index:4;display:none}
+.lang-tooltip{position:absolute;left:50%;bottom:calc(100% + 12px);transform:translateX(-50%) translateY(6px);width:max-content;max-width:270px;z-index:6;display:none;align-items:center;gap:8px;background:#241c12;border:1px solid var(--gold-line);border-radius:14px;padding:10px 13px;box-shadow:0 12px 30px rgba(0,0,0,.5);opacity:0;transition:opacity .3s var(--ease),transform .3s var(--ease)}
+.lang-tooltip .tt-text{font-size:12.5px;font-weight:600;color:#f1e6d2}
+.lang-tooltip .tt-arrow{position:absolute;top:100%;left:50%;transform:translateX(-50%);width:0;height:0;border-left:7px solid transparent;border-right:7px solid transparent;border-top:8px solid #241c12}
+#video.react-mode .lang-card .new-flag{display:inline-flex}
+#video.react-mode .lang-card{box-shadow:0 0 0 2px var(--gold),0 0 26px rgba(227,178,74,.3)}
+#video.react-mode .lang-tooltip{display:flex;opacity:1;transform:translateX(-50%) translateY(0)}
+#video.react-mode .controls{margin-top:84px}
+#video.react-mode #exitLangSeg [data-lang="es"]{animation:langpulse 1.6s var(--ease) infinite}
+@keyframes langpulse{0%,100%{box-shadow:0 0 0 0 rgba(227,178,74,0)}50%{box-shadow:0 0 0 4px rgba(227,178,74,.18)}}
+/* while the permission overlay is up, calm the coach-mark */
+#video.perm-open .lang-tooltip{opacity:0}
 </style>
 </head>
 <body>
@@ -238,6 +279,14 @@ body{
     </div>
     <pre><code id="codeBody">Loading source…</code></pre>
   </aside>
+
+  <!-- state switcher chips (right side) -->
+  <div class="state-chips" id="stateChips">
+    <div class="lbl">State</div>
+    <button data-state="exit" class="active"><span class="d"></span>Exit</button>
+    <button data-state="permission"><span class="d"></span>Permission</button>
+    <button data-state="reactivation"><span class="d"></span>Reactivation</button>
+  </div>
 
   <div class="phone">
 
@@ -277,10 +326,16 @@ body{
 
           <div class="cards">
             <!-- 1 · Video language -->
-            <div class="card">
+            <div class="card lang-card">
+              <span class="new-flag new-badge">NEW</span>
               <div class="ico"><svg viewBox="0 0 24 24"><rect width="14" height="12" x="2" y="6" rx="2"/><path d="m22 8-6 4 6 4V8Z"/></svg></div>
               <div class="meta"><div class="t">Video language</div></div>
-              <div class="seg" data-seg="lang"><button class="sel">English</button><button>Bahasa</button></div>
+              <div class="seg" data-seg="lang" id="exitLangSeg"><button class="sel">English</button><button data-lang="es">Spanish</button></div>
+              <div class="lang-tooltip" id="langTooltip">
+                <span class="new-badge">NEW</span>
+                <span class="tt-text">Now watch in Spanish — tap to switch</span>
+                <span class="tt-arrow"></span>
+              </div>
             </div>
 
             <!-- 2 · Playback speed (boxed, label + slider) -->
@@ -331,6 +386,47 @@ body{
           <button class="keep" id="thanksBack" style="max-width:220px">Back to lesson</button>
         </div>
       </div>
+
+      <!-- ===== PERMISSION SHEET (switch video language) ===== -->
+      <div class="perm-dim"></div>
+      <div class="sheet perm-sheet" id="permSheet">
+        <div class="thumb-glow"></div>
+        <div class="thumb"><img src="assets/video-bg.png" alt="Sarah" /></div>
+
+        <div class="sheet-top">
+          <div class="round-btn" id="permClose" title="Close">
+            <svg viewBox="0 0 24 24" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+          </div>
+        </div>
+
+        <div class="sheet-head">
+          <h2 class="sheet-title">Do you want to switch video language?</h2>
+        </div>
+
+        <div class="controls">
+          <div class="lang-switch">
+            <span class="lang-pill">English</span>
+            <svg class="arrow" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            <span class="lang-pill to">Español <span class="new-badge">NEW</span></span>
+          </div>
+        </div>
+
+        <div class="sheet-foot">
+          <div class="cta-row">
+            <button class="btn-neutral" id="permKeep">Keep English</button>
+            <button class="keep" id="permSwitch">Change to Spanish</button>
+          </div>
+          <div class="home-ind"></div>
+        </div>
+
+        <!-- acknowledgement overlay -->
+        <div class="rep-thanks" id="permThanks" hidden>
+          <div class="tick"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></div>
+          <h3>Now playing in Spanish 🎉</h3>
+          <p>Your lesson will continue in Español.</p>
+          <button class="keep" id="permThanksBack" style="max-width:220px">Continue</button>
+        </div>
+      </div>
     </div>
 
     <div class="toast" id="toast"></div>
@@ -346,7 +442,7 @@ function toast(m){toastEl.textContent=m;toastEl.classList.add('show');clearTimeo
 /* ---- screen nav (video flow) ---- */
 function showScreen(id){ ['roadmap','video'].forEach(s=>$('#'+s).classList.toggle('show', s===id)); if(id==='roadmap')$('#roadmap').scrollTop=0; }
 $('#startHot').onclick=()=>{ showScreen('video'); $('#startHot').classList.remove('pulse'); };
-$('#backHot').onclick=()=> openSheet();
+$('#backHot').onclick=()=> setState('exit');
 $('#flagVideo').onclick=()=> toast('Report a problem');
 
 /* sheet open/close + reset */
@@ -372,6 +468,41 @@ $('#keepBtn').onclick=()=>{
 };
 $('#endBtn').onclick=()=>{ closeSheet(); setTimeout(()=>{ showScreen('roadmap'); toast('Session ended · streak still safe'); },260); };
 $('#thanksBack').onclick=()=>{ closeSheet(); toast('Back to your lesson ✦'); };
+
+/* ---- permission sheet (switch video language) ---- */
+function openPerm(){ $('#permThanks').hidden=true; video.classList.add('perm-open'); }
+function closePerm(){ video.classList.remove('perm-open'); setTimeout(()=>$('#permThanks').hidden=true,320); }
+$('#permClose').onclick=closePerm;
+$('#permKeep').onclick=()=>{ closePerm(); toast('Keeping English'); };
+$('#permSwitch').onclick=()=>{ $('#permThanks').hidden=false; };
+$('#permThanksBack').onclick=()=>{
+  const seg=$('#exitLangSeg');
+  if(seg){ seg.querySelectorAll('button').forEach(b=>b.classList.remove('sel')); const es=seg.querySelector('[data-lang="es"]'); if(es) es.classList.add('sel'); }
+  video.classList.remove('react-mode');
+  closePerm(); toast('Video language: Spanish');
+};
+
+/* in reactivation, tapping Spanish opens the permission overlay instead of just selecting */
+$('#exitLangSeg').addEventListener('click',e=>{
+  if(currentState!=='reactivation') return;
+  const b=e.target.closest('button'); if(!b) return;
+  if(b.dataset.lang==='es'){ e.stopImmediatePropagation(); openPerm(); }
+}, true);
+
+/* ---- state switcher: exit / permission / reactivation ---- */
+let currentState='exit';
+function resetLang(){ const seg=$('#exitLangSeg'); if(seg) seg.querySelectorAll('button').forEach((b,i)=>b.classList.toggle('sel',i===0)); }
+function setState(s){
+  currentState=s;
+  $$('#stateChips button').forEach(b=>b.classList.toggle('active', b.dataset.state===s));
+  showScreen('video'); $('#startHot').classList.remove('pulse');
+  video.classList.remove('perm-open','react-mode'); $('#permThanks').hidden=true;
+  resetLang();
+  if(s==='exit'){ openSheet(); }
+  else if(s==='permission'){ video.classList.remove('sheet-open'); resetSheet(); openPerm(); }
+  else if(s==='reactivation'){ openSheet(); video.classList.add('react-mode'); }
+}
+$('#stateChips').addEventListener('click',e=>{ const b=e.target.closest('button[data-state]'); if(b) setState(b.dataset.state); });
 
 /* ---- segmented ---- */
 $$('[data-seg]').forEach(seg=>seg.addEventListener('click',e=>{
@@ -404,7 +535,9 @@ $$('[data-seg]').forEach(seg=>seg.addEventListener('click',e=>{
 /* QA: #video / #sheet deep-link to a flow state for screenshots */
 (function(){const h=location.hash.slice(1);
   if(h==='video'){showScreen('video');$('#startHot').classList.remove('pulse');}
-  if(h==='sheet'){showScreen('video');$('#startHot').classList.remove('pulse');openSheet();}
+  if(h==='sheet'||h==='exit'){setState('exit');}
+  if(h==='permission'){setState('permission');}
+  if(h==='reactivation'){setState('reactivation');}
 })();
 
 /* ---- view-code drawer ---- */
